@@ -23,7 +23,7 @@ const getAllTasks = async (req, res) => {
 const updateTask = async (req, res) => {
   const { title, description, completed } = req.body;
   const { taskId } = req.params;
-  console.log(taskId);
+
   try {
     const task = await Task.findByPk(taskId);
     
@@ -31,11 +31,9 @@ const updateTask = async (req, res) => {
     
     task.title = title;
     task.description = description;
-    task.completed = completed;
-    console.log("before date");
-    
+    task.completed = completed;    
     task.updated_at = new Date().toJSON();
-    console.log("after date");
+
     await task.save();
 
     res.json(task);
