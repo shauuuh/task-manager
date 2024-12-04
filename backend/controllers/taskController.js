@@ -20,6 +20,25 @@ const getAllTasks = async (req, res) => {
   }
 };
 
+const updateProgress = async (req, res) => {
+  const { completed } = req.body;
+  const { taskId } = req.params;
+
+  try {
+    const task = await Task.findByPk(taskId);
+    if(!task) return res.status(404).json({ error: "Task not found"});
+
+    task.completed = completed;
+    task.updated_at = new Date().toJSON();
+
+    await task.save();
+
+    res.json(task);
+  } catch (error) {
+    res.status(500).json({ error: 'Error updating the progress'});
+  }
+};
+
 const updateTask = async (req, res) => {
   const { title, description, completed } = req.body;
   const { taskId } = req.params;
@@ -57,4 +76,4 @@ const deleteTask = async (req, res) => {
   }
 };
 
-export {createTask, getAllTasks, updateTask, deleteTask};
+export {createTask, getAllTasks, updateProgress, updateTask, deleteTask};
