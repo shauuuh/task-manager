@@ -6,7 +6,7 @@ const TaskManager = () => {
   const [tasks, setTask ] = useState([]);
 
   const addTask = (task) => {
-    setTask([...task, task]);
+    setTask([...tasks, task]);
   };
 
   return (

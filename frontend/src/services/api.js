@@ -12,12 +12,17 @@ export const getAllTasks = async () => {
   return response.data;
 };
 
+export const updateProgress =  async (taskId, taskData) => {
+  const response = await axios.patch(`${API_URL}/tasks/${taskId}`, taskData);
+  return response.data;
+};
+
 export const updateTask = async (taskId, taskData) => {
   const response = await axios.put(`${API_URL}/tasks/${taskId}`, taskData);
   return response.data;
 };
 
-export const deletedTask = async (taskId) => {
+export const deleteTask = async (taskId) => {
   const response = await axios.delete(`${API_URL}/tasks/${taskId}`);
   return response.data;
 };
