@@ -8,8 +8,12 @@ const TaskList = ({ tasks, setTasks }) => {
 
   useEffect(() => {
     const fetchTask = async () => {
-      const data = await getAllTasks();
-      setTasks(data);
+      try {
+        const data = await getAllTasks();
+        setTasks(data);
+      } catch(error) {
+        console.error("Error fetching tasks:", error.response?.data || error.message);
+      }
     };
     fetchTask();
   }, []);

@@ -18,7 +18,8 @@ const TaskForm = ({ taskAdded }) => {
       }; 
 
       const response = await createTask(taskData);
-      taskAdded(response.data);
+      
+      taskAdded(response);
       setFormData({ title: '', description: ''});
 
     } catch (error) {
