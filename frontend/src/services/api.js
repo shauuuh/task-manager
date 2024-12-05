@@ -12,8 +12,10 @@ export const getAllTasks = async () => {
   return response.data;
 };
 
-export const updateProgress =  async (taskId, taskData) => {
-  const response = await axios.patch(`${API_URL}/tasks/${taskId}`, taskData);
+export const updateProgress =  async (taskId, completed) => {  
+  const response = await axios.patch(`${API_URL}/tasks/${taskId}`, { completed });
+  console.log(response);
+  
   return response.data;
 };
 

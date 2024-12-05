@@ -27,9 +27,12 @@ const TaskList = ({ tasks, setTasks }) => {
     });
 
     setTasks(completedTasks);
-
+    const stateTask = completedTasks.find(task => task.id === taskId).completed;
+    
     try {
-      await updateProgress(taskId, completedTasks.find(task => task.id === taskId).completed);
+      console.log(stateTask);
+
+      await updateProgress(taskId, stateTask);
     } catch (error) {
       console.error("Error updating the state", error.response?.data || error.message);
     }
