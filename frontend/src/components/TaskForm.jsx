@@ -19,10 +19,10 @@ const TaskForm = ({ taskAdded }) => {
 
       const response = await createTask(taskData);
       taskAdded(response.data);
-      setForm({ title: '', description: ''});
+      setFormData({ title: '', description: ''});
 
     } catch (error) {
-      console.error(error.response.data);
+      console.error("Error creating the task", error.response?.data || error.message );
     }
   };
 

@@ -1,10 +1,9 @@
 import React, {useState, useEffect} from 'react';
-import ReactModal from 'react-modal';
 import { getAllTasks, updateProgress, updateTask, deleteTask } from '../services/api';
+import ReactModal from 'react-modal';
 import TaskItem from './TaskItem';
 
-const TaskList = () => {
-  const [tasks, setTasks] = useState([]);
+const TaskList = ({ tasks, setTasks }) => {
   const [editingTask, setEditingTask] = useState(null);
 
   useEffect(() => {
@@ -30,19 +29,40 @@ const TaskList = () => {
     } catch (error) {
       console.error("Error updating the state", error.response?.data || error.message);
     }
-  }
+  };
 
   const handleEdit = (task) => {
     setEditingTask(task);
-  }
+  };
 
-  const submitEdit = (e, taskId ) => {
+  const submitEdit = async (e) => {
+    e.preventDefault();
+    if(!editingTask) return;
 
-  }
+    try {
+      const updatedTask = await updateTask(editingTask.id, editingTask);
+      const updatedTasks = tasks.map(task => task.id === updatedTask.id ? updatedTask : task);
+      setTasks(updatedTasks);
+      setEditingTask(null);
+    } catch (error) {
+      console.error("Error updating the task", error.response?.data || error.message);
+    }
+  };
 
-  const deleteTask = (taskId) => {
+  const handleDelete = async (taskId) => {
+    const confirmDelete = window.confirm("Are you sure of delete this post?");
+    
+    if(!confirmDelete) return;
 
-  }
+    try {
+      await deleteTask(taskId);
+
+      const updatedTasks = tasks.filter(task => task.id !== taskId);
+      setTasks(updatedTasks);
+    } catch (error){
+      console.error("Error deleting the task", error.response?.data || error.message );
+    }
+  };
 
   return (
     <div>
@@ -51,20 +71,43 @@ const TaskList = () => {
         <TaskItem 
           key={task.id}
           task={task}
-          taskCompleted={handleCompleted}
-          editTask={handleEdit}
-          deleteTask={deleteTask}
+          taskCompleted={() => handleCompleted(task.id)}
+          editTask={() => handleEdit(task)}
+          deleteTask={() => handleDelete(task.id)}
         />        
       ))}
 
       {editingTask && (
-        <ReactModal >
+        <ReactModal isOpen={!!editingTask} onRequestClose={() => setEditingTask(null) } ariaHideApp={false}>
+          <h2>Edit task</h2>
+          <form onSubmit={submitEdit}>
+            <label>
+              Title: 
+              <input
+                type='text'
+                value={editingTask.title}
+                onChange={(e) => setEditingTask({ ...editingTask, title: e.target.value})}
+                required
+              />
+            </label>
+            <label>
+              Description:
+              <textarea
+                value={editingTask.description}
+                onChange={(e) => setEditingTask({ ...editingTask, description: e.target.value })}
+              />
+              <label>
+                Progress: 
 
+              </label>
+            </label>
+            <button type='submit'>Save</button>
+            <button type='submit' onClick={() => setEditingTask(null)}>Cancel</button>
+          </form>
         </ReactModal>
       )}
     </div>
   );
-
 };
 
 export default TaskList;

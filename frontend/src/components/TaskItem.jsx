@@ -3,13 +3,17 @@ import React from 'react';
 const TaskItem = ({ task, taskCompleted, editTask, deleteTask }) => {
   return(
     <div>
-      <input type="checkbox" onClick={() => taskCompleted(task.id)}/>
-      <h2>{task.title}</h2>
+      <input 
+        type="checkbox" 
+        checked={task.completed}
+        onChange={taskCompleted}
+      />
+      <span>{task.title}</span>
       <p>{task.description}</p>
-      <button onClick={() => editTask(task)}>Edit</button>
-      <button onClick={() => deleteTask(task.id)}>Delete</button>
+      <button onClick={editTask}>Edit</button>
+      <button onClick={deleteTask}>Delete</button>
     </div>
   );
-}
+};
 
 export default TaskItem;
