@@ -10,7 +10,7 @@ const TaskManager = () => {
   };
 
   return (
-    <div>
+    <div className="min-h-screen bg-background">
       <TaskForm taskAdded={addTask} />
       <TaskList tasks={tasks} setTasks={setTasks} />    
     </div>

@@ -1,10 +1,8 @@
-import React, {useState, useEffect} from 'react';
+import React, { useEffect } from 'react';
 import { getAllTasks, updateProgress, updateTask, deleteTask } from '../services/api';
-import ReactModal from 'react-modal';
 import TaskItem from './TaskItem';
 
 const TaskList = ({ tasks, setTasks }) => {
-  const [editingTask, setEditingTask] = useState(null);
 
   useEffect(() => {
     const fetchTask = async () => {
@@ -18,41 +16,33 @@ const TaskList = ({ tasks, setTasks }) => {
     fetchTask();
   }, []);
 
-  const handleCompleted = async (taskId) => {
-    const completedTasks = tasks.map(task => {
-      if(task.id === taskId) {
-        task.completed = !task.completed;
-      }
-      return task;
-    });
-
-    setTasks(completedTasks);
-    const stateTask = completedTasks.find(task => task.id === taskId).completed;
-    
+  const submitEdit = async (taskId, updatedData) => {
     try {
-      console.log(stateTask);
-
-      await updateProgress(taskId, stateTask);
+      const updatedTask = await updateTask(taskId, updatedData); 
+      const updatedTasks = tasks.map((task) =>
+        task.id === updatedTask.id ? updatedTask : task
+      );
+  
+      setTasks(updatedTasks); 
     } catch (error) {
-      console.error("Error updating the state", error.response?.data || error.message);
+      console.error("Error updating the task:", error.response?.data || error.message);
     }
   };
 
-  const handleEdit = (task) => {
-    setEditingTask(task);
-  };
+  const handleCompleted = async (taskId) => {
+    const updatedTasks = tasks.map(task =>
+      task.id === taskId ? { ...task, completed: !task.completed } : task 
+    );
 
-  const submitEdit = async (e) => {
-    e.preventDefault();
-    if(!editingTask) return;
+    updatedTasks.sort((a,b) => a.completed - b.completed);
+    setTasks(updatedTasks);
 
+    const stateTask = updatedTasks.find(task => task.id === taskId).completed;
+    
     try {
-      const updatedTask = await updateTask(editingTask.id, editingTask);
-      const updatedTasks = tasks.map(task => task.id === updatedTask.id ? updatedTask : task);
-      setTasks(updatedTasks);
-      setEditingTask(null);
+      await updateProgress(taskId, stateTask);
     } catch (error) {
-      console.error("Error updating the task", error.response?.data || error.message);
+      console.error("Error updating the state", error.response?.data || error.message);
     }
   };
 
@@ -72,47 +62,18 @@ const TaskList = ({ tasks, setTasks }) => {
   };
 
   return (
-    <div>
-      <h1>Tasks</h1>
+    <div className='m-5'>
       {tasks.map(task => (
         <TaskItem 
           key={task.id}
           task={task}
-          taskCompleted={() => handleCompleted(task.id)}
-          editTask={() => handleEdit(task)}
-          deleteTask={() => handleDelete(task.id)}
+          onCompleted={() => handleCompleted(task.id)}
+          onEdit={submitEdit}
+          onDelete={() => handleDelete(task.id)}
         />        
       ))}
 
-      {editingTask && (
-        <ReactModal isOpen={!!editingTask} onRequestClose={() => setEditingTask(null) } ariaHideApp={false}>
-          <h2>Edit task</h2>
-          <form onSubmit={submitEdit}>
-            <label>
-              Title: 
-              <input
-                type='text'
-                value={editingTask.title}
-                onChange={(e) => setEditingTask({ ...editingTask, title: e.target.value})}
-                required
-              />
-            </label>
-            <label>
-              Description:
-              <textarea
-                value={editingTask.description}
-                onChange={(e) => setEditingTask({ ...editingTask, description: e.target.value })}
-              />
-              <label>
-                Progress: 
-
-              </label>
-            </label>
-            <button type='submit'>Save</button>
-            <button type='submit' onClick={() => setEditingTask(null)}>Cancel</button>
-          </form>
-        </ReactModal>
-      )}
+      
     </div>
   );
 };
