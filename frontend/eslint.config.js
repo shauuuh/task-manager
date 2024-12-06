@@ -17,11 +17,21 @@ export default [
         sourceType: 'module',
       },
     },
+    env: {
+      browser: true,
+      node: true, 
+      es6: true
+    },
     settings: { react: { version: '18.3' } },
     plugins: {
       react,
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
+    },
+    extends: ["eslint:recommended", "plugin:react/recommended"],
+    parserOptions: {
+      "ecmaVersion": 2020,
+      "sourceType": "module"
     },
     rules: {
       ...js.configs.recommended.rules,
