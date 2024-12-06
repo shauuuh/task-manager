@@ -8,7 +8,7 @@ const app = express();
 const PORT = 5000;
 
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: 'https://task-manager-blond-five-16.vercel.app/',
   optionsSuccessStatus: 200
 }));
 
