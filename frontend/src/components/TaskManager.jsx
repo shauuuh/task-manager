@@ -5,8 +5,10 @@ import TaskForm from './TaskForm';
 const TaskManager = () => {
   const [tasks, setTasks ] = useState([]);
 
+  // Actualiza array tasks con nueva task  
   const addTask = (task) => {
-    setTasks([...tasks, task]);
+    const updatedTasks = [task, ...tasks].sort((a, b) => a.completed - b.completed);
+    setTasks(updatedTasks);
   };
 
   return (
