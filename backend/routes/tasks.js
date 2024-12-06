@@ -4,6 +4,7 @@ import { validateTask } from '../middleware/taskDataValidation.js';
 
 const router = express.Router();
 
+/* ---- RUTAS ---- */
 router.get('/', getAllTasks);
 router.post('/', validateTask, createTask);
 router.patch('/:taskId', updateProgress);

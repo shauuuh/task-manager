@@ -1,5 +1,6 @@
 import Task from '../models/Task.js';
 
+/* --- Query db crear tarea ---*/
 const createTask = async (req, res) => {
   const { title, description } = req.body;
 
@@ -11,15 +12,21 @@ const createTask = async (req, res) => {
   }
 };
 
+/* --- Query db obtener tareas ---*/
 const getAllTasks = async (req, res) => {
   try {
-    const tasks = await Task.findAll();
-    res.json(tasks);
+    const tasks = await Task.findAll({
+      order: [
+        ["completed", "ASC"], 
+        ["createdAt", "DESC"]],
+    });
+    res.status(200).json(tasks);
   } catch (error) {
     res.status(500).json({ error: 'Error getting the tasks'});
   }
 };
 
+/* --- Query db actualizar estado tarea --- */
 const updateProgress = async (req, res) => {
   const { completed } = req.body;
   const { taskId } = req.params;
@@ -39,6 +46,7 @@ const updateProgress = async (req, res) => {
   }
 };
 
+/* --- Query db actualizar tarea --- */
 const updateTask = async (req, res) => {
   const { title, description, completed } = req.body;
   const { taskId } = req.params;
@@ -61,6 +69,7 @@ const updateTask = async (req, res) => {
   }
 };
 
+/* --- Query db eliminar tarea --- */
 const deleteTask = async (req, res) => {
   const { taskId } = req.params;
   try {

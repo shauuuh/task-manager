@@ -1,5 +1,6 @@
 import { body, validationResult } from 'express-validator';
 
+/* --- Validación datos de tarea --- */
 export const validateTask = [
   body('title')
     .notEmpty()

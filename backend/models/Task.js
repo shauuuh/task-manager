@@ -1,6 +1,7 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../config/db.js";
 
+/* --- Modelo tabla db --- */
 const Task = sequelize.define('Task', {
   id: {
     type: DataTypes.INTEGER,
