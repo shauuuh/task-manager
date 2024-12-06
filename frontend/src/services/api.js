@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000';
+const API_URL = 'https://task-manager-h8zu.onrender.com';
 
 // Solicitud backend CREAR TAREA
 export const createTask = async (taskData) => {
