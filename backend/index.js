@@ -8,7 +8,7 @@ const app = express();
 const PORT = 5000;
 
 app.use(cors({
-  origin: 'https://task-manager-blond-five-16.vercel.app/',
+  origin: 'https://task-manager-j6934amx3-shauuuhs-projects.vercel.app',
   optionsSuccessStatus: 200
 }));
 
