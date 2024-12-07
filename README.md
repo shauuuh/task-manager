@@ -12,7 +12,7 @@ Funcionalidades principales:
 Este proyecto no requiere autenticación para probar sus funcionalidades.
 
 ### Enlaces
-- **Frontend:** [https://task-manager-j6934amx3-shauuhs-projects.vercel.app/](https://task-manager-j6934amx3-shauuhs-projects.vercel.app/)
+- **Frontend:** [https://task-manager-git-main-shauuuhs-projects.vercel.app/](https://task-manager-git-main-shauuuhs-projects.vercel.app/)
 - **Backend:** [https://task-manager-h8zu.onrender.com/](https://task-manager-h8zu.onrender.com/)
 
 Instrucciones para ejecutar el proyecto:
