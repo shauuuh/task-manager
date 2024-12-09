@@ -16,16 +16,13 @@ const TaskForm = ({ taskAdded }) => {
     const description = formData.get("description");
 
     try {
-      const taskData = {
-        title,
-        description
-      }; 
+      const taskData = { title, description }; 
 
       const response = await createTask(taskData);
       
       taskAdded(response);
-      title = formData.set("");
-      description = formData.set("");
+
+      e.target.reset();
       
     } catch (error) {
       console.error("Error creating the task", error.response?.data || error.message );
